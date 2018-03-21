@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2015  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,34 +18,39 @@
 
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
+#include "Utils.h"
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {55102, 25141}},    //Vout
-    {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{775, 50},                        {11080, 1000}},    //Ismps
-    {{2017, 50},                        {11971, 300}},    //Idischarge
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
 
-    {{0, 0},                        {0, 0}},    //VoutMux
-    {{0, 0},                        {0, 0}},    //Tintern
-    {{0, 0},                        {48061, 14047}},    //Vin
+    {{0,  0},         {52992,  24484}},   //Vout_plus_pin
+    {{0,  0},         {52992,  24484}},   //Vout_minus_pin
+    {{362,  50},         {10522,  1000}},   //Ismps
+    {{1090,  50},         {7744,  300}},   //Idischarge
+
+    {{0,  0},         {0,  0}},   //VoutMux
+    {{0,  0},         {0,  0}},   //Tintern
+    {{0,  0},         {42432,  12440}},   //Vin
     {{5884,  2280},         {0,  0}},   //Textern
 
-    {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {55048, 4187}},    //Vb1_pin
-    {{0, 0},                      {56248, 8378}},  //Vb2_pin
-    {{0, 0},                      {56067, 4191}},  //Vb3_pin
-
-    {{0, 0},                      {54784, 4193}},  //Vb4_pin
-    {{0, 0},                      {55070, 4196}},  //Vb5_pin
-    {{0, 0},                      {55808, 4193}},  //Vb6_pin
+    {{0,  0},         {53628,  4332}},   //Vb0_pin
+    {{0,  0},         {53628,  4332}},   //Vb1_pin
+    {{0,  0},         {53696,  8432}},   //Vb2_pin
+    {{0,  0},         {53569,  4099}},   //Vb3_pin
+    {{0,  0},         {51648,  4013}},   //Vb4_pin
+    {{0,  0},         {53696,  4062}},   //Vb5_pin
+    {{0,  0},         {53155,  4093}},   //Vb6_pin
 
 #if MAX_BALANCE_CELLS > 6
-    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
-    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+    {{0,  0},         {53155,  4093}},   //Vb7_pin
+    {{0,  0},         {53155,  4093}},   //Vb8_pin
 #endif
-    //1-1 correlation
-    {{780, 50},                      {11080, 1000}},  //IsmpsSet
-    {{730, 50},                      {4410, 300}},  //IdischargeSet
+
+    {{355,  50},         {10520,  1000}},   //IsmpsSet
+    {{390,  50},         {2895,  300}},   //IdischargeSet
 };
 
-
+namespace {
+    void assert() {
+        STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
+    }
+}
